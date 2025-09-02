@@ -1,0 +1,130 @@
+{% extends "layout.html" %}
+{% block title %}Tactical Action Results{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="text-center mb-5">
+        <h1 class="display-5">Today's Tactical Actions & Impact</h1>
+        <p class="lead">Real-time recommendations to prevent waste and maximize value.</p>
+    </div>
+
+    <!-- Sustainability Impact -->
+    <h2 class="mb-4">📈 Sustainability & Business Impact</h2>
+    <div class="row g-4 text-center mb-5">
+        <div class="col-lg-3 col-md-6">
+            <div class="card h-100 shadow-sm text-white bg-success">
+                <div class="card-body">
+                    <h5 class="card-title">Revenue Recovered</h5>
+                    <p class="card-text display-6 fw-bold">{{ revenue_recovered }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="card h-100 shadow-sm text-white bg-info">
+                <div class="card-body">
+                    <h5 class="card-title">Potential Meals Donated</h5>
+                    <p class="card-text display-6 fw-bold">{{ potential_meals }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="card h-100 shadow-sm bg-light">
+                <div class="card-body">
+                    <h5 class="card-title">CO₂ Emissions Saved</h5>
+                    <p class="card-text display-6 fw-bold">{{ co2_saved }} kg</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="card h-100 shadow-sm bg-light">
+                <div class="card-body">
+                    <h5 class="card-title">Water Saved</h5>
+                    <p class="card-text display-6 fw-bold">{{ water_saved }} L</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Flash Sale Items -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">⚡ Fresh Flash Sale Items</h2>
+        {% if sale_items %}
+            <button class="btn btn-danger" onclick="notifySale()">Notify All Customers</button>
+        {% endif %}
+    </div>
+    <div class="row g-4 mb-5">
+        {% for item in sale_items %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 shadow-sm sale-card">
+                    <div class="card-header bg-danger text-white fw-bold fs-4 text-center">
+                        {{ (item.discount_rate * 100)|int }}% OFF
+                    </div>
+                    <div class="card-body">
+                        <h4 class="card-title">{{ item.product_name }}</h4>
+                        <p class="card-subtitle mb-2 text-muted">{{ item.category }}</p>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Expires in: <strong>{{ item.days_until_expiry }} days</strong></li>
+                            <li class="list-group-item">Current Stock: <strong>{{ item.current_stock }} units</strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="col">
+                <div class="alert alert-success" role="alert">
+                    <h4 class="alert-heading">Inventory is Optimal!</h4>
+                    <p>No items require a flash sale right now. Great job on inventory management!</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+
+    <!-- Donation Items -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">💖 Upcoming Charity Donations</h2>
+        {% if donation_items %}
+            <button class="btn btn-info" onclick="notifyCharity()">Notify All Charities</button>
+        {% endif %}
+    </div>
+    <div class="row g-4 mb-5">
+    {% if donation_items %}
+        {% for item in donation_items %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm donation-card">
+                <div class="card-header bg-info text-white fw-bold fs-4 text-center">
+                    Charity Donation
+                </div>
+                <div class="card-body">
+                    <h4 class="card-title">{{ item.product_name }}</h4>
+                    <p class="card-subtitle mb-2 text-muted">{{ item.category }}</p>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Expires in: <strong>{{ item.days_until_expiry }} days</strong></li>
+                        <li class="list-group-item">Current Stock: <strong>{{ item.current_stock }} units</strong></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="col">
+            <div class="alert alert-info" role="alert">
+                No items are scheduled for immediate donation.
+            </div>
+        </div>
+    {% endif %}
+    </div>
+
+</div>
+
+<script>
+function notifySale() {
+    alert("Customers have been notified about all flash sale items!");
+}
+
+function notifyCharity() {
+    alert("The designated charities have been notified about all upcoming donations.");
+}
+</script>
+{% endblock %}
